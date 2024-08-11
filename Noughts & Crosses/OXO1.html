@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Noughts & Crosses</title>
+    <style>
+        h1 {
+            color: rebeccapurple;
+            font-size: 5rem;
+            text-shadow: 1px 1px 1px black, -1px -1px 1px black;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: rgb(175, 120, 201);
+            overflow: hidden;
+        }
+
+        .row div {
+            padding: 50px;
+            border: 4px solid black;
+            height: 30px;
+            width: 30px;
+            float: left;
+            font-size: 4rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+         
+        }
+
+        .row {
+            clear: both;
+        }
+    </style>
+</head>
+<body>
+    <h1>Noughts & Crosses</h1>
+    <div class="row">
+        <div style="border-left: none; border-top: none;" id="0_0" onclick="place(this)"></div>
+        <div style="border-top: none;" id="1_0" onclick="place(this)"></div>
+        <div style="border-right: none; border-top: none;" id="2_0" onclick="place(this)"></div>
+    </div>
+    <div class="row">
+        <div style="border-left: none;" id="0_1" onclick="place(this)"></div>
+        <div id="1_1" onclick="place(this)"></div>
+        <div style="border-right: none;" id="2_1" onclick="place(this)"></div>
+    </div>
+    <div class="row">
+        <div style="border-left: none; border-bottom: none;" id="0_2" onclick="place(this)"></div>
+        <div style="border-bottom: none;" id="1_2" onclick="place(this)"></div>
+        <div style="border-right: none; border-bottom: none;" id="2_2" onclick="place(this)"></div>
+    </div>
+    <script>
+        let currentPlayer = "O";
+        let won = false;
+        function place(box) {
+            if(box.innerText != "" || won ) return;
+            box.innerText = currentPlayer;
+            currentPlayer == "O" ? currentPlayer = "X" : currentPlayer = "O";
+            checkGameBoard();
+        }
+
+        function checkGameBoard() {
+            for(let i = 0; i <=2; i++) {
+            checkWinner(document.getElementById("0_" + i).innerText, document.getElementById("1_" + i).innerText,document.getElementById("2_" + i).innerText);
+            checkWinner(document.getElementById(i + "_0").innerText, document.getElementById(i + "_1").innerText,document.getElementById(i + "_2").innerText);
+            checkWinner(document.getElementById("0_0").innerText, document.getElementById("1_1").innerText,document.getElementById("2_2").innerText);
+            checkWinner(document.getElementById("0_2").innerText, document.getElementById("1_1").innerText, document.getElementById("2_0").innerText);
+        }
+    }
+
+        function checkWinner(first, second, third) {
+            if(first != "" && first == second && first == third) {
+                alert("winner");
+                won = true;
+            }
+        }
+
+        
+    </script> 
+</body>
+</html>

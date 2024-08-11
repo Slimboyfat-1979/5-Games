@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake</title>
+    <style>
+        input {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="1024" height="1024"></canvas>
+    <input type="button" onclick="draw()" value="draw">
+    <input type="button" onclick="remove()" value="clear">
+    <script>
+      let game = {
+        tickNumber: 0,
+        timer: null,
+        board: [
+        "###############",
+        "#             #",
+        "#             #",
+        "#             #",
+        "#    ####     #",
+        "#    ####     #",
+        "#             #",
+        "#             #",
+        "#             #",
+        "###############"
+
+        ],
+        tick:function() {
+            game.tickNumber++;
+            graphics.drawGame();
+            game.timer = window.setTimeout(game.tick, 500)
+        }
+      };
+
+     let snake = {
+        parts: [
+            {x:4, y:2},
+            {x:3, y:2},
+            {x:2, y:2}
+        ],
+        facing: "E",
+        move:function() {
+
+        }
+     }
+
+      let graphics = {
+        canvas: document.getElementById("canvas"),
+        squareSize: 30,
+        drawGame: function() {
+            let ctx = this.canvas.getContext("2d");
+            graphics.drawBoard(ctx);
+            graphics.drawSnake(ctx);
+        },
+        drawBoard:function(ctx) {
+           let currentYOffset = 0;
+           game.board.forEach(function checkLine(line){
+            line = line.split('');
+            let currentXOffset = 0;
+            line.forEach(function checkCharacter(character){
+                if(character == '#'){
+                    ctx.fillStyle = "black";
+                    ctx.fillRect(currentXOffset, currentYOffset, graphics.squareSize, graphics.squareSize)
+                    }
+                    currentXOffset += graphics.squareSize;
+                });
+                currentYOffset += graphics.squareSize;
+           })
+        },
+        drawSnake: function(ctx) {
+            snake.parts.forEach(function drawPart(part){
+                let partXLocation = part.x * graphics.squareSize;
+                let partYLocation = part.y * graphics.squareSize;
+                ctx.fillStyle = "green";
+                ctx.fillRect(partXLocation, partYLocation, graphics.squareSize, graphics.squareSize)
+            })
+        }
+      }
+
+     
+
+      let gameControl = {
+        startGame:function() {
+            game.tick()
+        }
+      };
+
+      gameControl.startGame();
+
+ 
+
+
+    //   let canvas = document.getElementById("canvas");
+    //   let ctx = canvas.getContext("2d");
+    //   let currentYOffset = 0;
+    //   let squareSize = 30;
+
+    //   board.forEach(function checkLine(line) {
+    //     line = line.split('')
+    //     let currentXOffSet = 0;
+    //     line.forEach(function checkCharacter(character){
+    //         if(character == '#') {
+    //             ctx.fillStyle = 'black';
+    //             ctx.fillRect(currentXOffSet, currentYOffset, squareSize, squareSize)
+    //         }
+    //         currentXOffSet += squareSize;
+    //     })
+    //     currentYOffset += squareSize
+    //   })
+    </script>
+</body>
+</html>
