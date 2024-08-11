@@ -32,9 +32,11 @@
 
         ],
         tick:function() {
+            window.clearTimeout(game.timer)
             game.tickNumber++;
+            snake.move();
             graphics.drawGame();
-            game.timer = window.setTimeout(game.tick, 500)
+            game.timer = window.setTimeout(game.tick, 500 );
         }
       };
 
@@ -45,8 +47,22 @@
             {x:2, y:2}
         ],
         facing: "E",
-        move:function() {
+        nextLocation: function() {
+            let snakeHead = snake.parts[0];
+            let targetX = snakeHead.x;
+            let targetY = snakeHead.y;
 
+            targetY = snake.facing == "N" ? targetY-1 : targetY;
+            targetY = snake.facing == "S" ? targetY+1: targetY;
+            targetX = snake.facing == "W" ? targetX-1: targetX;
+            targetX = snake.facing == "E" ? targetX+1: targetX;
+
+            return {x: targetX, y: targetY};
+        },
+        move:function() {
+            var location = snake.nextLocation();
+            snake.parts.unshift(location);
+            snake.parts.pop();
         }
      }
 
@@ -55,6 +71,7 @@
         squareSize: 30,
         drawGame: function() {
             let ctx = this.canvas.getContext("2d");
+            ctx.clearRect(0, 0, graphics.canvas.width, graphics.canvas.height);
             graphics.drawBoard(ctx);
             graphics.drawSnake(ctx);
         },
@@ -86,7 +103,19 @@
      
 
       let gameControl = {
+        processInput: function(keyPressed) {
+            let key = keyPressed.key.toLowerCase();
+            let targetDirection = snake.facing;
+            if(key == 'w') targetDirection = "N";
+            if(key == 'a') targetDirection = "W";
+            if(key == 's') targetDirection = "S";
+            if(key == 'd') targetDirection = "E";
+
+            snake.facing = targetDirection;
+            game.tick();s
+        },
         startGame:function() {
+            window.addEventListener("keypress", gameControl.processInput, false);
             game.tick()
         }
       };
